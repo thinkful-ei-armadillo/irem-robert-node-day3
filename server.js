@@ -2,10 +2,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const movies = require('./movies');
+const cors = require('cors');
+const helmet = require('helmet');
 require('dotenv').config(); 
 const app = express();
 
 app.use(morgan('dev'));
+app.use(cors());
+app.use(helmet());
 
 app.use((req, res, next) => {
   const authToken = req.get('Authorization');
