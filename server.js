@@ -8,8 +8,8 @@ require('dotenv').config();
 const app = express();
 
 app.use(morgan('dev'));
-app.use(cors());
 app.use(helmet());
+app.use(cors());
 
 app.use((req, res, next) => {
   const authToken = req.get('Authorization');
