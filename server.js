@@ -2,10 +2,20 @@
 const express = require('express');
 const morgan = require('morgan');
 const movies = require('./movies');
-
+require('dotenv').config(); 
 const app = express();
 
 app.use(morgan('dev'));
+
+app.use((req, res, next) => {
+  const authToken = req.get('Authorization');
+
+  if (!authToken || authToken.split(' ')[1] !== process.env.API_TOKEN) {
+    return res.status(401).json({error: 'Unauthorized'})
+  }
+
+  next();
+})
 
 const PORT = 8000;
 
@@ -27,6 +37,7 @@ app.get('/movie', (req,res) => {
   if(avg_vote){
     results = movies.filter(movie => movie.avg_vote >= avg_vote);
   }
+
   res.json(results);
 });
 
